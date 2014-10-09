@@ -1,0 +1,178 @@
+Week 1 test
+========================================================
+
+Question 1: 
+--------------------------------------------------------
+
+The American Community Survey distributes downloadable data about United States communities. Download the 2006 microdata survey about housing for the state of Idaho using download.file() from here: 
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv 
+
+and load the data into R. The code book, describing the variable names is here: 
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FPUMSDataDict06.pdf 
+
+How many properties are worth $1,000,000 or more?
+
+
+First check existence of data directory, create if not, then check existence of file, download if not, and load into a variable 
+
+Didnt put a timestamp because this is a one shot code
+
+```{r}
+if(!file.exists("dataTest")){
+dir.create("dataTest")
+}
+
+dataOrigin<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv" 
+
+destfile<-"./dataTest/dataQ1.csv"
+
+if(!file.exists(destfile)){
+    getwd()
+    download.file(dataOrigin,destfile,method="curl")
+}
+
+dataQ1<-read.csv(destfile)
+head(dataQ1)
+```
+
+La columna que tiene el valor que nos interesa segun el codebook se llama VAL, nos quedamos solo con esa 
+
+```{r}
+dataQ1<-subset(dataQ1,select="VAL")
+head(dataQ1)
+```
+
+Los valores estan codificados en clave,  las posesiones con mayor valor que 1M$ tienen el codigo 24
+
+```{r}
+sum(dataQ1$VAL==24,na.rm=TRUE)
+```
+
+Y la respuesta es 53  Lo que esta bastante bien por que es una de las posibilidades
+
+
+Question 2: 
+--------------------------------------------------------
+Use the data you loaded from Question 1. Consider the variable FES in the code book. Which of the "tidy data" principles does this variable violate?
+Numeric values in tidy data can not represent categories.
+Tidy data has one variable per column.
+Tidy data has variable values that are internally consistent.
+Each tidy data table contains information about only one type of observation
+
+Veamos que dice el codebook de la variable FES 
+
+"FES 1 
+ Family type and employment status "
+
+Con lo que tenemos dos variables por columna y la respuesta es la que en esta version del examen sale la segunda 
+
+
+Question 3: 
+--------------------------------------------------------
+
+Download the Excel spreadsheet on Natural Gas Aquisition Program here: 
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx 
+
+Read rows 18-23 and columns 7-15 into R and assign the result to a variable called:
+ dat 
+What is the value of:
+ sum(dat$Zip*dat$Ext,na.rm=T) 
+(original data source: http://catalog.data.gov/dataset/natural-gas-acquisition-program) 
+
+Empezamos buscando la existencia del archivo y directorio  y si no lo hay lo creamos y descargamos
+
+
+```{r}
+if(!file.exists("dataTest")){
+dir.create("dataTest")
+}
+
+dataOrigin<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx" 
+
+destfile<-"./dataTest/dataQ3.xlsx"
+
+if(!file.exists(destfile)){
+    getwd()
+    download.file(dataOrigin,destfile,method="curl")
+}
+
+
+``` 
+
+
+Ahora que ya tenemos el archivo podemos cargarlo a la variable dat como piden (es necesario haber instalado con install.packages el paquete "xlsx")
+
+
+```{r}
+library(xlsx)
+dat<-read.xlsx(destfile,sheetIndex=1,header=TRUE,rowIndex=18:23,colIndex=7:15)
+head(dat)
+```
+
+y ya metemos la cuentecita del examen, que no sirve para nada mas que para el examen todo sea dicho 
+
+```{r}
+sum(dat$Zip*dat$Ext,na.rm=T) 
+```
+
+
+
+Question 4
+-------------------------------------------------
+Read the XML data on Baltimore restaurants from here: 
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml 
+
+How many restaurants have zipcode 21231?
+
+
+Empezamos buscando la existencia del archivo y directorio  y si no lo hay lo creamos y descargamos
+
+
+```{r}
+if(!file.exists("dataTest")){
+dir.create("dataTest")
+}
+
+dataOrigin<-"https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml" 
+
+destfile<-"./dataTest/dataQ4.xml"
+
+if(!file.exists(destfile)){
+    getwd()
+    download.file(dataOrigin,destfile,method="curl")
+}
+
+``` 
+
+
+Vamos a cargar el archivo
+```{r}
+library(XML)
+document<-xmlTreeParse(destfile,useInternalNodes=T)
+
+rootNode<-xmlRoot(document)
+```
+
+Hay una forma bastante facil de hacerlos sabiendo que el tag que buscamos se llama zipcode,  extraemos todos los valores de zipcode a un archivo
+
+```{r}
+zips<-xpathSApply(rootNode,"//zipcode",xmlValue)
+```
+
+Y sumamos los que coinciden con el 21231 
+
+```{r}
+sum(zips == "21231")
+```
+
+
+Question 5
+-------------------------------
+
+Aunque es evidente aqui pondre el codigo para comprobarlo y tener guardados los tiempos 
+
+Va a haber que usar system.time

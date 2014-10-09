@@ -79,7 +79,7 @@ si hay problemas  quote="" arregla bastante cosas
 ```
 
 ### Archivos de Excell (xlsx)
-Lo mas comodo es usar el paquete xlsx con library y despues usar read.xlsx y readxlsx2, siendo el segundo mas rapido, pero mejor usarlo solo con archivos completos 
+Lo mas comodo es usar el paquete xlsx con library y despues usar read.xlsx y read.xlsx2, siendo el segundo mas rapido, pero mejor usarlo solo con archivos completos 
 
 parametros importantes sheetIndex y header=TRUE
 
@@ -99,6 +99,7 @@ tnemos xmlTreeParse que nos manda a una estrucutura de datos el xml
 tenemos utiles el xmlRoot que devuelve el root node (que viene siendo todo)
 xmlName
 
+Es importatne usar el useInterlanNodes=TRUE
 names da los nombres de los elementos en le siguiente nivel
 
 para acceder a los elementos se usa [[n]]  y se puede seguir bajando niveles con mas [[]]
