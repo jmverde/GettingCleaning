@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Getting and Cleaning the Data  Week 1</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Getting and Cleaning the Data  Week 1</h1>
+
+<p><strong>Fundamental dejar recogidos todos los pasos del procesado de los datos</strong></p>
+
+<p>Code book:  explica las variables en el data set (muchas veces se pone aqui por ejemplo las unidades)</p>
+
+<p>Hay que dejar y mantener la raw data como tal, sin haber hecho con ella absolutamente nada (sin quitar nada ni resumir nada), ni haber corrido nada de software en ella</p>
+
+<h3>Tidy data</h3>
+
+<ul>
+<li>Cada variable en una columna</li>
+<li>cada observacion en una linea</li>
+<li>una tabla por cada &ldquo;tipo&rdquo; de variable</li>
+<li><p>si hay varias tablas tiene que haber una columna que las permita linkar</p></li>
+<li><p>Primera fila con nombre de variables</p></li>
+<li><p>Nombres de variables claros y explicitos</p></li>
+<li><p>Un archivo por tabla</p></li>
+</ul>
+
+<h3>Code book</h3>
+
+<p>Toda la informacion de las variables que no esta en los archivos,  UNIDADES!
+Informacion sobre las decisiones que se tomaron al resumir
+Informacion del dise??o experimental</p>
+
+<p>Se suele incluir en el mismo sitio un experimental desing</p>
+
+<h3>Instruction list: como pasar del principio al final</h3>
+
+<p>Lo suyo es que sea un script
+imput: raw data
+output: tidy data
+No tiene que tener parametros</p>
+
+<p>Si no puede ser un script hay que dar unas instrucciones explicitas</p>
+
+<h2>Downloading Files</h2>
+
+<h4>Manejo de directorios</h4>
+
+<p>getwd() y setwd() son tus amigos,  se puede usar absoluto o relativo partiendo de ./  y las rutas se meten como cadenas de texto
+Ojo, en guindows hay que usar \</p>
+
+<p>ver si existe un directorio  file.exists() 
+crear: dir.create(&ldquo;dirname&rdquo;) </p>
+
+<p>exemplio </p>
+
+<p>if(!file.exists(&ldquo;data&rdquo;)){
+dir.create(&ldquo;data&rdquo;)
+}</p>
+
+<h3>descargar de internet</h3>
+
+<p>download.file()  viene bien usarlo para asegurar reproducibilidad 
+parametros  <em>url</em>  <em>destfile</em> <em>method</em> 
+cuando hay problemas de https hay que usar  method=&ldquo;curl&rdquo; por que</p>
+
+<p>Importante dejar algo asi como Fechadownload&lt;-date() y guardarlo en algun sitio, por que los archivos tienden a cambiar
+A veces es mejor dejar esto fuera del script y dejar dicho en las instructions como se hizo (por no descargarte todos los dias cuatro gigas)</p>
+
+<h3>Cargar archivos locales</h3>
+
+<p>read.table()  es la mas flexible, pero hay que pasarle muchos parametros, tarda tiempo y ademas necesita cargar todo en RAM
+parametros importantes  file, header, sep, row.names, nrows, con nrows dices cuantas lineas quieres leer</p>
+
+<p>read.csv pone el separador como &ldquo;,&rdquo; y header en true</p>
+
+<p>mas valores  quote: si hay comillas na.strings si el na esta representado por otra cosa (hay en col de datos que viene con -1 &hellip;) y skip para decir cuantas lineas quieres saltarte al principio</p>
+
+<p>si hay problemas  quote=&ldquo;&rdquo; arregla bastante cosas</p>
+
+<h3>Archivos de Excell (xlsx)</h3>
+
+<p>Lo mas comodo es usar el paquete xlsx con library y despues usar read.xlsx y readxlsx2, siendo el segundo mas rapido, pero mejor usarlo solo con archivos completos </p>
+
+<p>parametros importantes sheetIndex y header=TRUE</p>
+
+<p>se pueden usar colIndex y rowIndex para hacer un subset de lo que se quiere leer</p>
+
+<p>tambien tenemos write.xlsx</p>
+
+<p>Mirar tambien XLconect</p>
+
+<h3>Archivos XML</h3>
+
+<p>como siempre tenemos nuestras tags que abren y cierran delimitando campos o solo cierran (por ejemplo saltos de linea) (las que solo cierran acaban en slash en vez de empezar como las normales de cierre) 
+Dentro de la tag tambien puede haber info, que son atributos del campo</p>
+
+<p>Se usa la biblioteca XML
+tnemos xmlTreeParse que nos manda a una estrucutura de datos el xml
+tenemos utiles el xmlRoot que devuelve el root node (que viene siendo todo)
+xmlName</p>
+
+<p>names da los nombres de los elementos en le siguiente nivel</p>
+
+<p>para acceder a los elementos se usa [[n]]  y se puede seguir bajando niveles con mas [[]]</p>
+
+<p>Sacar cosas del la estructura:  usar xmlSapply,  por ejemplo para sacar los valores de todo se haria xmlSapply(nodo,xmlValue)</p>
+
+<p>Para acceder hay que usar XPath 
+/node  top level
+//node  nodo a cualquier nivel
+nodo[@atrr name]  nodo con un nombre de atributo
+nodo[@atrname =&ldquo;pepe&rdquo;] nodo que cumple esa condicion </p>
+
+<p>Por ejemplo, sacar todos los valores de nombres de subnodo
+xpathSapply(datos,&ldquo;//name&rdquo;,xmlValue)
+sacar todos los precios</p>
+
+<p>xpathSapply(datos,&ldquo;//price&rdquo;,xmlValue)</p>
+
+<p>Se pueden hacer cosas muy parecidas con html partiendo de la funcion 
+htmlTreeParse solo que hay que poner una url  (y usar useInternal=TRUE) 
+y despues se puede usar el xpathSapply </p>
+
+<h3>Archivos JSON</h3>
+
+<p>La idea es parecida a xml
+los objetos se guardan como doble, strings, bool,array [] y objetos (como los dict de python, en {} y por pares, no ordenados, key:value) </p>
+
+<p>se usa el package jsonlite 
+se puede usar fromJSON(url) </p>
+
+<p>names:  top level variables y se puede ir bajando niveles a base de json$equipos$primeradiv</p>
+
+<p>se puede usar toJSON para guardar data frames en JSON  hbria que tener una buena razon para no usar pretty=TRUE </p>
+
+<h3>The data.table package</h3>
+
+<p>todas las funciones que aplican sobre data.frame funcionan en data.table (por que hereda de esta)
+mas rapido por que va en C</p>
+
+<p>library(data.table) </p>
+
+<p>tables() te dice cuanta memoria esta ocupada por cada tabla </p>
+
+<p>el sub set es como en un data frame </p>
+
+<p>si se hace subset con un solo indice lo hace directamente a rows (con lo que no haria falta la , final) </p>
+
+<p>subset columnas </p>
+
+<p>cualquier cosa que pasas despues de la coma es una expresion,  que es una coleccion de ordenes metidas en {}, por ejemplo pondriamos list(mean(x),sum(z)) y haria la media de la columna que se llama x y la suma de la que se llama z  (y no hace falta poner las comillas) </p>
+
+<p>a??adir nueva columna DT[,z:=expresion]  ojo, que si repites numero lo pisas</p>
+
+<p>ojo, no se hacen copias distintas en memoria si no se usa copy de forma explicita </p>
+
+<p>se podrian hacer pasos intermedios DT[,m:={tmp&lt;-(x+y);log2(tmp+2)} </p>
+
+<p>se pueden hacer evaliaciones DT[,x:a&gt;0] 
+se puede ordenar con un by=</p>
+
+<p>Variables especiales:
+.N numero de veces que aparece cada variable DT[,.N,by=x] </p>
+
+<p>Keys,  para ordenar mucho mas rapido  setKey(DT,variable)  DT[&#39;valor del key&#39;] da los que hacen falta </p>
+
+<p>tambien se puede usar un setkey y despues usar la misma key para un merge(DT1,DT2) </p>
+
+<p>Fast Reading </p>
+
+<p>Es mejor usar data.table para leer rapido de disco </p>
+
+<p>Para usar archis que no se vayan a guardar se puede usar tempfile() </p>
+
+<p>usar para grabar write.table() y despues se puede usar fread para leerlas
+y usar sep=&ldquo;\t&rdquo; para guardar con tabuladores que es lo que lee por defecto fread</p>
+
+</body>
+
+</html>
+

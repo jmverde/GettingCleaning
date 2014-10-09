@@ -75,8 +75,8 @@ read.csv pone el separador como "," y header en true
 mas valores  quote: si hay comillas na.strings si el na esta representado por otra cosa (hay en col de datos que viene con -1 ...) y skip para decir cuantas lineas quieres saltarte al principio
 
 si hay problemas  quote="" arregla bastante cosas
-```{r}
-```
+
+
 
 ### Archivos de Excell (xlsx)
 Lo mas comodo es usar el paquete xlsx con library y despues usar read.xlsx y readxlsx2, siendo el segundo mas rapido, pero mejor usarlo solo con archivos completos 
