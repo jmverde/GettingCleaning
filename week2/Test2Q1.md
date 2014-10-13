@@ -37,7 +37,7 @@ oauth_endpoints("github")
 
 ```r
 
-myapp <- oauth_app("github", key = "7e2c48d888343d3779d7", secret = "fa231d3509ee0c3768584bebaa3d05ce44657934")
+myapp <- oauth_app("github", key = "7e2c48d888343d377fff", secret = "fa231d3509ee0c3768584bebaa3d05ce34257934")
 
 github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
 ```
