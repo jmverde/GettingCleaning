@@ -1,0 +1,89 @@
+Apuntes Week 2
+========================================================
+
+Seguimos viendo como se trata con archivos en distintos formatos
+
+### MySQL
+
+Hay que instalar: ver pdf
+
+base de datos  tiene tablas que tiene registros
+
+cada fila se llama record 
+
+siempre estan linkadas por al menos una variable 
+
+
+En primer lugar hay que conectar el R a la base de datos con dbConnect (y asignar a un objeto) y para sacar cosas se usa dbGetQuery y se pasa el comando como opcion, y acordarse de desconectar despues con dbDisconnect
+
+en servidores grandes puede haber muchas DB, te conectas primero usas "show databases;" ves cuales son, te desconectas y luego te conectas con la opcion db="ladbquequiero" 
+
+dbListTables  dice despues las tablas de esa DB en concreto 
+dbListFields te da los campos de una tabla 
+
+saber cuantas filas tiene una tabla
+
+dbGetQuery(db,"select count(*) from tabla") 
+
+Para conseguir una tabla
+
+dbReadTable(db,"tabla") 
+
+
+
+usar dbClearResult para limpiar las query cuando se acaban 
+
+
+
+### HDF5
+
+
+incluye metadata 
+
+cada grupo tienen 0 o mas data sets y su metadata
+
+group header con el nombre y atributos y group symbol table con la lista de objetos de cada grupo
+
+datasets header con nombre tipo de datos dataspace y layout de almacenaje y un data array con los datos 
+
+Mejor leer el pdf
+
+### Leyedo de la red aka Web scrapping
+
+En primer lugar establecer una conexion con con=url("la url") 
+
+despues se puede leer con readlines 
+y acordarse de cerrar la conexion  eso devuelve una megalinea 
+
+Solucion mejor  usar el package XML y usar 
+
+obj<- htmlTreeParse(url, useInteralNodes=T) 
+y despues usar xpathSAplly sobre el objeto resultante como con el XML 
+
+paquete httr 
+usar GET(url) 
+despues se puede limpiar con content(lo que tenia,as="text") 
+crear un parsedHTML con htmlParse(content2,asText=T) y usar ahi xpathSApply 
+
+lo bueno de GET es que puedes entrar con password  GET(url,autenticate("user","password")) 
+
+Uso de handles 
+
+puedes poner la direccion base  google = handle("http://google.com") y despues acceder a otros sitios con path  get(handle=google, path="search")  y el handle puede quedar autentificado y asi no hay que andar autenticando todas las veces (lo que ademas hace mas dificil que te pillen)
+
+
+### Datos desde APIs
+
+En general lo suyo es usar HTTr y get, por que suele hacer falta autentificacion 
+
+Crean una aplicacion con oauth 
+app = oauth_app("nombre",key="ConsumerKey",secret="consumerSecret") 
+sig = sign_oauth1.0(app,token="tutoken",token_secret="secretotojen")
+homeTL = GET("enlacededescarga",sig) 
+
+"enlace de descarga" en general hay que construirlo segun lo que quieras pedir, asi que hay que ver la documentacion del la API 
+
+### otras fuentes
+
+en general se puede usar file para conectar con archivos (y hay que cerrarlo tambien)  ver ?connections  
+el package foreing trae para abrir archivos de otros programas de estadisitcia

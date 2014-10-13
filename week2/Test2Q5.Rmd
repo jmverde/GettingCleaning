@@ -1,0 +1,50 @@
+Test2Q5
+========================================================
+
+Read this data set into R and report the sum of the numbers in the fourth of the nine columns. 
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for 
+
+Original source of the data: http://www.cpc.ncep.noaa.gov/data/indices/wksst8110.for 
+
+(Hint this is a fixed width file format)
+
+Empiezo bajando el archivo para variar
+
+```{r}
+if(!file.exists("dataTest")){
+dir.create("dataTest")
+}
+
+dataOrigin<-"https://d396qusza40orc.cloudfront.net/getdata%2Fwksst8110.for " 
+
+destfile<-"./dataTest/dataQ5.for"
+
+if(!file.exists(destfile)){
+    getwd()
+    download.file(dataOrigin,destfile,method="curl")
+}
+
+
+```
+
+Despues miro a ojo en las primeras lineas los anchos de las 9 columnas, eso hay que hacerlo a mano  
+
+va a tocar hacerlo con read.fwf 
+las cuatro primeras filas no aportan nada, asi que la cosa sera poner un skip = 4 
+
+los anchos a ojo podrian ser algo asi como 14,5,4,9,4,9,4,9,4   
+
+```{r}
+data<-read.fwf(file=destfile,widths = c( 14,5,4,9,4,9,4,9,4), skip =4)
+
+head(data)
+```
+
+El resultado tiene bastante buena pinta asi que calculamos lo que pide 
+
+```{r}
+sum(data[,4])
+```
+
+

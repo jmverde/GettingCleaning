@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Apuntes Week 2</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Apuntes Week 2</h1>
+
+<p>Seguimos viendo como se trata con archivos en distintos formatos</p>
+
+<h3>MySQL</h3>
+
+<p>Hay que instalar: ver pdf</p>
+
+<p>base de datos  tiene tablas que tiene registros</p>
+
+<p>cada fila se llama record </p>
+
+<p>siempre estan linkadas por al menos una variable </p>
+
+<p>En primer lugar hay que conectar el R a la base de datos con dbConnect (y asignar a un objeto) y para sacar cosas se usa dbGetQuery y se pasa el comando como opcion, y acordarse de desconectar despues con dbDisconnect</p>
+
+<p>en servidores grandes puede haber muchas DB, te conectas primero usas &ldquo;show databases;&rdquo; ves cuales son, te desconectas y luego te conectas con la opcion db=&ldquo;ladbquequiero&rdquo; </p>
+
+<p>dbListTables  dice despues las tablas de esa DB en concreto 
+dbListFields te da los campos de una tabla </p>
+
+<p>saber cuantas filas tiene una tabla</p>
+
+<p>dbGetQuery(db,&ldquo;select count(*) from tabla&rdquo;) </p>
+
+<p>Para conseguir una tabla</p>
+
+<p>dbReadTable(db,&ldquo;tabla&rdquo;) </p>
+
+<p>usar dbClearResult para limpiar las query cuando se acaban </p>
+
+<h3>HDF5</h3>
+
+<p>incluye metadata </p>
+
+<p>cada grupo tienen 0 o mas data sets y su metadata</p>
+
+<p>group header con el nombre y atributos y group symbol table con la lista de objetos de cada grupo</p>
+
+<p>datasets header con nombre tipo de datos dataspace y layout de almacenaje y un data array con los datos </p>
+
+<p>Mejor leer el pdf</p>
+
+<h3>Leyedo de la red aka Web scrapping</h3>
+
+</body>
+
+</html>
+
