@@ -1,0 +1,170 @@
+Semana 3
+========================================================
+
+Subsetting and sorting
+----------------------------------------
+
+X data frame
+
+Columna  X[,col] o X[,"colname"]
+Filas X[1:4,] 
+
+se pueden combinar las dos cosas
+
+tambien se pueden pasar argunmentos logicos
+
+X[X$"var1">1|X$"var2"<2,]
+
+Si se quieren quitar los NA se puede usar which(condicion logica) y asi se quitan
+
+### Sorting
+usar sort para ordenar array, opciones na.last o descending 
+
+Para colocar un dataframe 
+
+X[order(X$pepe),]  se puede usar order(var1,var2) y se usaria para desempatar var2 
+
+
+### plyr package 
+
+library (plyr)
+usar arrange(dataframe,nombre de variable) 
+descenciente arrange(dataframe,desc(variable)) 
+
+
+### agnadir una columna 
+X$nombre_nuevo<- mis datos 
+otra posibilidad usar cbind  y<-cbind(c,newcol) 
+
+agnadir rows rbind
+
+
+***
+
+Sumarizing data 
+------------------
+
+Mirar principio/final  head/tail  y la opcion principal seria n=
+
+
+make a sumary  sumary()  te dice cuanto aparece cada factor y en los numericos max, min, quantiles 
+
+str da bastante mas informacion
+
+quantile, analiza la distribucion de numericas,  se pueden poner probs ad hoc usando  probs=c(0.1,0.2) por ejemplo 
+
+make table da las frecuencias de los niveles,  opcion maja useNA="ifany" te saca los NA 
+
+con dos variables saca una tabla cruzada 
+
+### Check missing values
+
+any(is.na("pepe")) responde true o false
+
+sum(is.na("pepe")) da cuantos 
+
+y es comodo para ver los bounds un all(condicion logica) 
+
+para ver todas las columnas se puede usar colSums(is.NA(DS)) 
+incluso si hay muchisimo se puede hacer all(colSums(is.NA(DS))==0) 
+
+buscar valores en concreto:
+table(array %in% c("pepe"))  y en el c se podrian meter varios y devuelve una tabla de trues y false 
+
+Con eso mismo se puede subsetear
+el DF[DF$cosa %in% c(a,b),] 
+
+### cross tabs,  para comparar una variable con otra 
+
+xtabs(var1 ~ var2+var3,data=DF)    la ~se pone con la letra de este pais y alt, no hace falta poner el nombre del df en la variable por que ya se ha dado en data
+exemplio (freq ~ Gender+Admit,data=DF) daria una tabla de frecuencias en las que Gender y admit serian fila y columna  
+var 1 es la que sale en la tabla, y el resto son las que se ponen como opciones 
+
+si se pone ~. se hace un break por todas las demas variables, lo que hace multiples tablas  y despues se puede hacer un 
+ftables() a lo que sale, y lo saca todo en una tabla mas complicada 
+
+object.size da el tama??o en memoria de una variable
+
+
+------
+
+Creando nuevas variables
+-----------------
+
+Habitualmente hacen falta secuencias (index y demas) 
+
+se emplea seq() 
+importante seq(along=x)  que nos crearia uns indices con la longitud x
+
+variables binarias 
+
+usar ifelse(condicion,valortrue,valorfalse) 
+
+Crear variables categoricas (por ejemplo, margenes de ganancia) 
+usar cut(datos, breaks=) 
+
+```{r}
+datos<-rnorm(1000)
+grupos<-cut(datos,breaks=seq(-1,1,length=4)) 
+head(grupos)
+table(grupos)
+```
+
+tambien puede molar usar los quantile para obtener los breaks
+
+en el paquete Hmisc hay un cut2 al que se le puede especificar el numero de grupos y el usa el quantile solo
+
+factor sirve para crear factores a partir de variables (util por ejemplo con enteros, codigos postales) 
+
+se puede usar levels=c() para poneros en el orden que queremos  (util si vamos a hacer algo con as.numeric) etc 
+
+al hacer cut se consiguen variables factor 
+
+se pueden a??adir tambien con mutate (de plyr) 
+
+
+importantes round y singinf (redondear y numero de cifras significativas) 
+
+
+----
+
+
+Reshaping data
+----
+
+Problema, cuando hay varias medidas juntas,  datos como nombres de columnas...  
+
+usar la biblioteca reshape2
+
+melting 
+
+se usa melt y se le dice que variables son id id.vars y cuales son medidas measure.vars  (si no se dice algo lo mete como id veriable) 
+cada medida tiene su nuevo valor  (se ponen una encima de la otra) 
+por ejemplo, en un coche tanto el consumo como la velocidad serian medidas, y en un dataset tidy no deberian estar en la misma fila, sino que habria una fila en la que una variable diria consumo y al lado pondria el valor y en otra diria velocidad y al lado pondria el valor 
+
+casting 
+
+usamos dcast 
+
+dcast(datos, indice a usar ~ variables a usar)  y hace un sumary de las variables para los valores del indice,  si no sse pone nada hace un link (es decir, cuenta cuantas medidas hay de cada),  lo habitual es poner despues ,mean para que de la media de las medidas asociadas  
+
+haciendo medias 
+
+tapply(datos$valores,datos$factoresparaagrupar, mean)  (donde dice mean digase cualquier transformacion grupal) 
+
+otra posibilidad seria usar split para hacer los grupetes y despues hacer con ellos lo que haga falta (en general un lapply) 
+
+con plyr  ddply 
+
+ddply(dataf,.(nombreVariableSplit),summarize,funciona a usar y variable a crear)  en este caso podria ser sum=sum(nombreVariable) y se crearia una variable llamada sum sumando la variable dicha 
+
+----
+Merging data
+----
+
+tenemos datos en varios archivos y que se unen por un id, queremos unirlos 
+
+merge(dfx,dfy,by.x="variableenX",by.y="variableEnY",all=TRUE)  el all lo que hace es decir que si no hay match se pongan al final los que sobran (y las variables que faltan se llenan con NA) 
+
+
+join en plyr va mas rapido mas rapido pero no deja dar opciones como el by.x y by.y   y tiene un join_all,  metes todos los df en una lista y haces un join_all
